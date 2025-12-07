@@ -66,6 +66,10 @@ export class RegisterComponent {
         return password === confirmPassword ? null : { mismatch: true };
     }
 
+    get f() {
+        return this.registerForm.controls;
+    }
+
     onSubmit() {
         if (this.registerForm.valid) {
             this.authService.register(this.registerForm.value).subscribe({
