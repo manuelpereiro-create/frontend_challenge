@@ -33,6 +33,12 @@ export class AuthService {
 
     }
 
+    me() {
+        return this.http.get<any>(`${this.apiUrl}/me`).pipe(
+            tap(user => this.currentUser.set(user))
+        );
+    }
+
     logout() {
         localStorage.removeItem('token');
         this.currentUser.set(null);
