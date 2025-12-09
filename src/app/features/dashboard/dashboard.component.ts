@@ -1,8 +1,7 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { AuthService } from '../../core/services/auth.service';
 import { MetricsService } from '../../core/services/metrics.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,7 +10,7 @@ import { Router } from '@angular/router';
   template: `
     <div class="dashboard-layout">
       <nav class="glass-nav">
-        <div class="brand">Angular Academy</div>
+        <div class="brand">Angular Academy 2025</div>
         
         <div class="user-controls">
             <div class="user-badge">
@@ -36,13 +35,13 @@ import { Router } from '@angular/router';
                 <div class="metric-box">
                     <span class="metric-label">Mis Logins Exitosos</span>
                     <span class="metric-value text-primary">
-                        {{ userMetrics?.login_count || 0 }}
+                        {{ userMetrics()?.login_count || 0 }}
                     </span>
                 </div>
                 <div class="metric-box">
                     <span class="metric-label">Última Conexión</span>
                     <span class="metric-value text-accent">
-                        {{ (userMetrics?.last_login | date:'dd/MM/yyyy HH:mm') || 'Primera vez' }}
+                        {{ (userMetrics()?.last_login | date:'dd/MM/yyyy HH:mm') || 'Primera vez' }}
                     </span>
                 </div>
             </div>
@@ -54,18 +53,18 @@ import { Router } from '@angular/router';
                 <p>Métricas globales de la aplicación.</p>
             </div>
 
-            <div *ngIf="adminMetrics" class="metrics-row">
+            <div *ngIf="adminMetrics()" class="metrics-row">
                 <div class="metric-box">
                     <span class="metric-label">Total Usuarios</span>
-                    <span class="metric-value">{{ adminMetrics.total_users }}</span>
+                    <span class="metric-value">{{ adminMetrics()?.total_users }}</span>
                 </div>
                 <div class="metric-box">
-                    <span class="metric-label">Total Logins (Sistema)</span>
-                    <span class="metric-value">{{ adminMetrics.total_system_logins }}</span>
+                    <span class="metric-label">Total Logins en el sistema</span>
+                    <span class="metric-value">{{ adminMetrics()?.total_system_logins }}</span>
                 </div>
             </div>
             
-            <div *ngIf="!adminMetrics" class="loading-text">
+            <div *ngIf="!adminMetrics()" class="loading-text">
                 Cargando datos del sistema...
             </div>
         </div>
@@ -74,17 +73,14 @@ import { Router } from '@angular/router';
     </div>
   `,
   styles: [`
-    /* Layout utilizando tus variables CSS globales */
     .dashboard-layout {
         min-height: 100vh;
-        /* El fondo ya viene del body global, dejamos transparente */
     }
 
-    /* Navbar estilo Glass */
     .glass-nav {
         display: flex; justify-content: space-between; align-items: center;
         padding: 1rem 2rem;
-        background: var(--card-bg); /* Reutilizando tu variable */
+        background: var(--card-bg);
         backdrop-filter: blur(10px);
         border-bottom: 1px solid var(--card-border);
         position: sticky; top: 0; z-index: 10;
@@ -117,20 +113,17 @@ import { Router } from '@angular/router';
     }
     .btn-logout:hover { background: rgba(153, 27, 27, 0.3); color: white; }
 
-    /* Contenedor principal */
     .content-container {
         max-width: 1000px; margin: 2rem auto; padding: 0 1.5rem;
         display: flex; flex-direction: column; gap: 2rem;
     }
 
-    /* Tarjetas del Dashboard (mismo estilo que tu Login pero más ancho) */
     .dashboard-card {
         background: var(--card-bg);
         border: 1px solid var(--card-border);
         border-radius: var(--border-radius);
         padding: 2rem;
         box-shadow: var(--shadow-sm);
-        /* Glow sutil */
         position: relative; overflow: hidden;
     }
 
@@ -154,7 +147,7 @@ import { Router } from '@angular/router';
     .metric-value { font-size: 2rem; font-weight: 700; color: var(--text-main); }
     
     .text-primary { color: #818cf8; }
-    .text-accent { color: #c084fc; font-size: 1.2rem; } /* Fecha más pequeña */
+    .text-accent { color: #c084fc; font-size: 1.2rem; }
     .text-warning { color: #facc15 !important; }
 
     .loading-text { color: var(--text-muted); font-style: italic; }
@@ -163,37 +156,29 @@ import { Router } from '@angular/router';
 export class DashboardComponent implements OnInit {
     authService = inject(AuthService);
     private metricsService = inject(MetricsService);
-    
-    // Signals y estado
+
     currentUser = this.authService.currentUser;
-    userMetrics: any = null;
-    adminMetrics: any = null;
+    userMetrics = signal<any>(null);
+    adminMetrics = signal<any>(null);
 
     ngOnInit() {
         this.loadDashboardData();
     }
 
     loadDashboardData() {
-        // 1. Llamamos a ME primero para asegurar el token y obtener el usuario actualizado
-        // Esto soluciona que "no traiga bien las métricas" si la página se recarga
         this.authService.me().subscribe({
             next: (user) => {
-                // Una vez que ME responde éxito, cargamos las métricas AUTOMÁTICAMENTE
-                
-                // Cargar métricas de usuario personal
                 this.metricsService.getUserMetrics().subscribe(data => {
-                    this.userMetrics = data;
+                    this.userMetrics.set(data);
                 });
 
-                // Si es admin, cargar métricas globales
                 if (user.role === 'admin') {
                     this.metricsService.getAdminMetrics().subscribe(data => {
-                        this.adminMetrics = data;
+                        this.adminMetrics.set(data);
                     });
                 }
             },
             error: () => {
-                // Si /me falla, el token no sirve
                 this.authService.logout();
             }
         });

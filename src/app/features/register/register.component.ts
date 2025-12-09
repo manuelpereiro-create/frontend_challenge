@@ -14,7 +14,7 @@ import { CommonModule } from '@angular/common';
         
         <div class="auth-header">
           <h2>Crear Cuenta</h2>
-          <p>Únete a Angular Academy</p>
+          <p>Angular Academy 2025</p>
         </div>
         
         <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
@@ -91,7 +91,7 @@ import { CommonModule } from '@angular/common';
           </button>
 
           <div class="auth-footer">
-            ¿Ya tienes cuenta? <a routerLink="/login" class="link">Inicia Sesión aquí</a>
+            ¿Ya tienes cuenta? <a routerLink="/login" class="link">Inicia Sesión</a>
           </div>
 
         </form>
