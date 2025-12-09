@@ -8,60 +8,8 @@ import { CommonModule } from '@angular/common';
   selector: 'app-login',
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule, RouterLink],
-  template: `
-    <div class="auth-container">
-      <div class="auth-card">
-        
-        <div class="auth-header">
-          <h2>Bienvenido de nuevo</h2>
-          <p>Ingresa tus credenciales para continuar</p>
-        </div>
-
-        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-          
-          <div class="form-group">
-            <label>Correo Electrónico</label>
-            <input 
-              type="email" 
-              class="form-input" 
-              formControlName="email" 
-              placeholder="nombre@ejemplo.com"
-              [class.error-border]="f['email'].touched && f['email'].invalid">
-          </div>
-
-          <div class="form-group">
-            <label>Contraseña</label>
-            <input 
-              type="password" 
-              class="form-input" 
-              formControlName="password" 
-              placeholder="••••••••">
-          </div>
-
-          <div class="error-msg" *ngIf="errorMessage">
-            {{ errorMessage }}
-          </div>
-
-          <button 
-            type="submit" 
-            class="btn-primary" 
-            [disabled]="loginForm.invalid || isLoading">
-            {{ isLoading ? 'Validando...' : 'Iniciar Sesión' }}
-          </button>
-        
-        </form>
-
-        <div class="auth-footer">
-          ¿Aún no tienes cuenta? 
-          <a routerLink="/register" class="link">Regístrate</a>
-        </div>
-
-      </div>
-    </div>
-  `,
-  styles: [`
-    .error-border { border-color: #ef4444; }
-  `]
+  templateUrl: './login.component.html',
+  styleUrl: './login.component.css'
 })
 export class LoginComponent {
   private fb = inject(FormBuilder);
@@ -78,7 +26,7 @@ export class LoginComponent {
 
   get f() { return this.loginForm.controls; }
 
-  onSubmit() {
+  onLogin() {
     if (this.loginForm.valid) {
       this.isLoading = true;
       this.errorMessage = '';
