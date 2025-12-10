@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectorRef } from '@angular/core'; // <--- 1. Importar esto
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../core/services/auth.service';
 import { Router, RouterLink } from '@angular/router';
@@ -15,6 +15,7 @@ export class LoginComponent {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef); 
 
   errorMessage = '';
   isLoading = false;
@@ -43,9 +44,12 @@ export class LoginComponent {
         },
         error: (err) => {
           this.isLoading = false;
-          this.errorMessage = err.error.message || 'Usuario o contraseña incorrectos';
+          this.errorMessage = err.error?.message || 'Usuario o contraseña incorrectos';
+          this.cdr.detectChanges(); // force Angular to check for changes
         }
       });
+    } else {
+      this.loginForm.markAllAsTouched(); // this will trigger validation messages
     }
   }
 }
