@@ -50,9 +50,6 @@ export class AuthService {
   }
 
   logout() {
-    // inform the backend (optional)
-    this.http.post(`${this.apiUrl}/logout`, {}).subscribe();
-    
     localStorage.removeItem('token');
     this.currentUser.set(null);
     this.router.navigate(['/login']);

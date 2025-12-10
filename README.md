@@ -1,59 +1,64 @@
-# Frontend
+# Frontend - Challenge
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.2.
+Este repositorio contiene el frontend para el challenge de Angular Academy 2025. La misma, consume la API de backend para gestionar usuarios, sesiones y métricas.
 
-## Development server
+## Features Implementadas
 
-To start a local development server, run:
+### Autenticación y Seguridad
 
-```bash
-ng serve
+- Registro de Usuario: Formulario reactivo (usando ReactiveForms) con validaciones:
+    - Formato de email.
+    - Complejidad de contraseña (mínimo 8 caracteres y 1 número).
+    - Confirmación de contraseña coincidente.
+
+- Login: Autenticación de usuarios y almacenamiento del JWT en localStorage.
+- Route Guards: Protección de rutas (/dashboard) que redirige al login si no existe una sesión válida.
+- Interceptor HTTP: Inyección automática del token Bearer en todas las peticiones a la API.
+
+### Dashboard y Datos
+
+- Métricas Personales: Visualización de datos del usuario (Total de logins, Último acceso) todo obtenido desde el endpoint /me.
+- Panel de Administrador: Sección que solo se muestra si el usuario tiene rol de admin, mostrando métricas globales del sistema y personales del admin.
+
+## Guía de Instalación y Ejecución
+
+1. Prerrequisitos
+
+- node.js (v18 o superior)
+- Angular CLI instalado globalmente:
+
+```
+npm install -g @angular/cli
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+El Backend debe estar corriendo en el puerto 3000 (ver el repositorio del backend).
 
-## Code scaffolding
+2. Instalación de Dependencias
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
+Ejecutar:
+```
+npm install
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+3. Configuración de Entorno
 
-```bash
-ng generate --help
+Verifica que el archivo `src/environments/environment.ts` apunte al backend local (HTTP, no HTTPS):
+```
+export const environment = {
+  production: false,
+  apiUrl: 'http://localhost:3000/api'
+};
 ```
 
-## Building
+4. Correr la Aplicación
 
-To build the project run:
+Para iniciar el servidor:
 
-```bash
-ng build
 ```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
+ng serve -o
 ```
+El flag -o abre automáticamente el navegador.
 
-## Running end-to-end tests
+Támbien se puede usar `npm start`
 
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+La app deberá de correr en `http://localhost:4200`
