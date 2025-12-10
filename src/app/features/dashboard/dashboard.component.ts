@@ -11,7 +11,7 @@ import { MetricsService } from '../../core/services/metrics.service';
   styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent implements OnInit {
-    private authService: AuthService = inject(AuthService);
+    protected authService: AuthService = inject(AuthService);
     private metricsService: MetricsService = inject(MetricsService);
 
     protected currentUser = this.authService.currentUser;
