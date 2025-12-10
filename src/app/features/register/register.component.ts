@@ -12,14 +12,14 @@ import { CommonModule } from '@angular/common';
   styleUrl: './register.component.css'
 })
 export class RegisterComponent {
-    private fb = inject(FormBuilder);
-    private authService = inject(AuthService);
-    private router = inject(Router);
+    private fb: FormBuilder = inject(FormBuilder);
+    private authService: AuthService = inject(AuthService);
+    private router: Router = inject(Router);
 
-    errorMessage = '';
+    protected errorMessage: string = '';
     
-    showPassword = false;
-    showConfirmPassword = false;
+    protected showPassword: boolean = false;
+    protected showConfirmPassword: boolean = false;
 
     registerForm = this.fb.group({
         name: ['', [Validators.required]],

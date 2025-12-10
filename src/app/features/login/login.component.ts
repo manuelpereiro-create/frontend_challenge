@@ -12,14 +12,14 @@ import { CommonModule } from '@angular/common';
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
-  private fb = inject(FormBuilder);
-  private authService = inject(AuthService);
-  private router = inject(Router);
-  private cdr = inject(ChangeDetectorRef); 
+  private fb: FormBuilder = inject(FormBuilder);
+  private authService: AuthService = inject(AuthService);
+  private router: Router = inject(Router);
+  private cdr: ChangeDetectorRef = inject(ChangeDetectorRef); 
 
-  errorMessage = '';
-  isLoading = false;
-  showPassword = false;
+  protected errorMessage: string = '';
+  protected isLoading: boolean = false;
+  protected showPassword: boolean = false;
 
   togglePassword() {
     this.showPassword = !this.showPassword;

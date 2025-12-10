@@ -11,12 +11,12 @@ import { MetricsService } from '../../core/services/metrics.service';
   styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent implements OnInit {
-    authService = inject(AuthService);
-    private metricsService = inject(MetricsService);
+    private authService: AuthService = inject(AuthService);
+    private metricsService: MetricsService = inject(MetricsService);
 
-    currentUser = this.authService.currentUser;
-    userMetrics = signal<any>(null);
-    adminMetrics = signal<any>(null);
+    protected currentUser = this.authService.currentUser;
+    protected userMetrics = signal<any>(null);
+    protected adminMetrics = signal<any>(null);
 
     ngOnInit() {
         this.loadDashboardData();
