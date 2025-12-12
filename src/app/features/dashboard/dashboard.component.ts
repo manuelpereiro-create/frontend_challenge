@@ -14,9 +14,9 @@ export class DashboardComponent implements OnInit {
     protected authService: AuthService = inject(AuthService);
     private metricsService: MetricsService = inject(MetricsService);
 
-    protected currentUser = this.authService.currentUser;
-    protected userMetrics = signal<any>(null);
-    protected adminMetrics = signal<any>(null);
+    currentUser = this.authService.currentUser;
+    userMetrics = signal<any>(null);
+    adminMetrics = signal<any>(null);
 
     ngOnInit() {
         this.loadDashboardData();

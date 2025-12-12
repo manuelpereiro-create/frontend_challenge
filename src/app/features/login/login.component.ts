@@ -17,9 +17,9 @@ export class LoginComponent implements OnInit {
   private router: Router = inject(Router);
   private cdr: ChangeDetectorRef = inject(ChangeDetectorRef); 
 
-  protected errorMessage: string = '';
-  protected isLoading: boolean = false;
-  protected showPassword: boolean = false;
+  errorMessage: string = '';
+  isLoading: boolean = false;
+  showPassword: boolean = false;
 
   togglePassword() {
     this.showPassword = !this.showPassword;
