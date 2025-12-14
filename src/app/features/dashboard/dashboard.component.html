@@ -1,63 +1,67 @@
 <div class="dashboard-layout">
-    <nav class="glass-nav">
+  <nav class="glass-nav">
     <div class="brand">Angular Academy 2025</div>
-    
+
     <div class="user-controls">
-        <div class="user-badge">
-            <span class="role" [class.admin]="authService.isAdmin()">
-                {{ authService.isAdmin() ? 'ADMIN' : 'USER' }}
-            </span>
-            <span class="name">{{ currentUser()?.name }}</span>
-        </div>
-        <button (click)="logout()" class="btn-logout">Cerrar Sesión</button>
+      <div class="user-badge">
+        <span class="role" [class.admin]="authService.isAdmin()">
+          {{ authService.isAdmin() ? 'ADMIN' : 'USER' }}
+        </span>
+        <span class="name">{{ currentUser()?.name }}</span>
+      </div>
+      <button (click)="logout()" class="btn-logout">Cerrar Sesión</button>
     </div>
-    </nav>
+  </nav>
 
-    <div class="content-container">
-    
+  <div class="content-container">
+
     <div class="dashboard-card user-section">
-        <div class="card-header">
-            <h3>Hola, {{ currentUser()?.name }}</h3>
-            <p>Aquí está el resumen de tu actividad personal.</p>
+      <div class="card-header">
+        <h3>Hola, {{ currentUser()?.name }}</h3>
+        <p>Aquí está el resumen de tu actividad personal.</p>
+      </div>
+
+      <div class="metrics-row">
+        <div class="metric-box">
+          <span class="metric-label">Mis Logins Exitosos</span>
+          <span class="metric-value text-primary">
+            {{ userMetrics()?.login_count || 0 }}
+          </span>
         </div>
-        
-        <div class="metrics-row">
-            <div class="metric-box">
-                <span class="metric-label">Mis Logins Exitosos</span>
-                <span class="metric-value text-primary">
-                    {{ userMetrics()?.login_count || 0 }}
-                </span>
-            </div>
-            <div class="metric-box">
-                <span class="metric-label">Última Conexión</span>
-                <span class="metric-value text-accent">
-                    {{ (userMetrics()?.last_login | date:'dd/MM/yyyy HH:mm') || 'Primera vez' }}
-                </span>
-            </div>
+        <div class="metric-box">
+          <span class="metric-label">Última Conexión</span>
+          <span class="metric-value text-accent">
+            {{ (userMetrics()?.last_login | date:'dd/MM/yyyy HH:mm') || 'Primera vez' }}
+          </span>
         </div>
+      </div>
     </div>
 
-    <div class="dashboard-card admin-section" *ngIf="authService.isAdmin()">
+    @if (authService.isAdmin()) {
+      <div class="dashboard-card admin-section">
         <div class="card-header">
-            <h3 class="text-warning">Panel de Administrador</h3>
-            <p>Métricas globales de la aplicación.</p>
+          <h3 class="text-warning">Panel de Administrador</h3>
+          <p>Métricas globales de la aplicación.</p>
         </div>
-
-        <div *ngIf="adminMetrics()" class="metrics-row">
+        @if (adminMetrics()) {
+          <div class="metrics-row">
             <div class="metric-box">
-                <span class="metric-label">Total Usuarios</span>
-                <span class="metric-value">{{ adminMetrics()?.total_users }}</span>
+              <span class="metric-label">Total Usuarios</span>
+              <span class="metric-value">{{ adminMetrics()?.total_users }}</span>
             </div>
             <div class="metric-box">
-                <span class="metric-label">Total Logins en el sistema</span>
-                <span class="metric-value">{{ adminMetrics()?.total_system_logins }}</span>
+              <span class="metric-label">Total Logins en el sistema</span>
+              <span class="metric-value">{{ adminMetrics()?.total_system_logins }}</span>
             </div>
-        </div>
-        
-        <div *ngIf="!adminMetrics()" class="loading-text">
+          </div>
+        }
+        @if (!adminMetrics()) {
+          <div class="loading-text">
             Cargando datos del sistema...
-        </div>
-    </div>
+          </div>
+        }
+      </div>
+    }
 
-    </div>
+  </div>
 </div>
