@@ -1,64 +1,55 @@
 # Frontend - Challenge
 
-Este repositorio contiene el frontend para el challenge de Angular Academy 2025. La misma, consume la API de backend para gestionar usuarios, sesiones y métricas.
+This repository contains the frontend for the Angular Academy 2025 challenge. It consumes the backend API to manage users, sessions, and metrics.
 
-## Features Implementadas
+## Implemented Features
 
-### Autenticación y Seguridad
+### Authentication and Security
+- User Registration: Reactive form (using ReactiveForms) with validations:
+  - Email format.
+  - Password complexity (minimum 8 characters and 1 number).
+  - Matching password confirmation.
+- Login: User authentication and JWT storage in localStorage.
+- Route Guards: Route protection (`/dashboard`) that redirects to login if no valid session exists.
+- HTTP Interceptor: Automatic injection of the Bearer token in all API requests.
 
-- Registro de Usuario: Formulario reactivo (usando ReactiveForms) con validaciones:
-    - Formato de email.
-    - Complejidad de contraseña (mínimo 8 caracteres y 1 número).
-    - Confirmación de contraseña coincidente.
+### Dashboard and Data
 
-- Login: Autenticación de usuarios y almacenamiento del JWT en localStorage.
-- Route Guards: Protección de rutas (/dashboard) que redirige al login si no existe una sesión válida.
-- Interceptor HTTP: Inyección automática del token Bearer en todas las peticiones a la API.
+- Personal Metrics: Visualization of user data (Total logins, Last access) all obtained from the `/me` endpoint.
+- Admin Panel: Section displayed only if the user has the admin role, showing global system metrics and personal admin metrics.
 
-### Dashboard y Datos
+## Installation and Execution Guide
 
-- Métricas Personales: Visualización de datos del usuario (Total de logins, Último acceso) todo obtenido desde el endpoint /me.
-- Panel de Administrador: Sección que solo se muestra si el usuario tiene rol de admin, mostrando métricas globales del sistema y personales del admin.
+1. Prerequisites
 
-## Guía de Instalación y Ejecución
-
-1. Prerrequisitos
-
-- node.js (v18 o superior)
-- Angular CLI instalado globalmente:
+- Node.js (v18 or higher)
+- Angular CLI installed globally:
 
 ```
 npm install -g @angular/cli
 ```
+The Backend must be running on port 3000 (see the backend repository).
 
-El Backend debe estar corriendo en el puerto 3000 (ver el repositorio del backend).
-
-2. Instalación de Dependencias
-
-Ejecutar:
+2. Install Dependencies
+Run:
 ```
 npm install
 ```
-
-3. Configuración de Entorno
-
-Verifica que el archivo `src/environments/environment.ts` apunte al backend local (HTTP, no HTTPS):
+3. Environment Configuration
+Verify that the `src/environments/environment.ts` file points to the local backend (HTTP, not HTTPS):
 ```
 export const environment = {
   production: false,
   apiUrl: 'http://localhost:3000/api'
 };
 ```
-
-4. Correr la Aplicación
-
-Para iniciar el servidor:
-
+4. Run the Application
+To start the server:
 ```
 ng serve -o
 ```
-El flag -o abre automáticamente el navegador.
+The `-o` flag automatically opens the browser.
 
-Támbien se puede usar `npm start`
+You can also use `npm start`
 
-La app deberá de correr en `http://localhost:4200`
+The app should run at `http://localhost:4200`
